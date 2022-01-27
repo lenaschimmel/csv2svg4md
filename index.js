@@ -7,19 +7,23 @@ const port = 3000;
 const requestHandler = (request, ourResponse) => {
   let csvUrl = request.url.substring(1);
 
+  ourResponse.setHeader("Content-Type", "image/svg+xml");
+
   if (csvUrl == "favicon.ico") {
-    ourResponse.end(csvReady("c,2,s"));
+    ourResponse.end(csvReady("csv\nsvg"));
     return;
   }
 
   axios
     .get(csvUrl)
     .then((remoteResponse) => {
-      ourResponse.setHeader("Content-Type", "image/svg+xml");
       ourResponse.end(csvReady(remoteResponse.data));
     })
     .catch((error) => {
-      let errorReport = "Error while generatring table\nPlease check out input URL\nIt should look like this:\nhttp://cloud.lenaschimmel.de/csv2svg/http://url.of.your/input/file.csv";
+      console.log("URL: " + csvUrl);
+      console.log("Error: " + error);
+      let errorReport =
+        "Error while generatring table\nPlease check out input URL\nIt should look like this:\nhttp://csv.lenaschimmel.de/http://url.of.your/input/file.csv";
       ourResponse.end(csvReady(errorReport));
     });
 };
@@ -44,7 +48,7 @@ function csvReady(rawData) {
   });
 
   let maxWidth = [];
-  let totalWidth = 20;
+  let totalWidth = 10;
   for (let record of records) {
     for (let i = 0; i < record.length; i++) {
       const text = record[i];
@@ -61,7 +65,7 @@ function csvReady(rawData) {
   for (let w of maxWidth) {
     totalWidth += (w + 1) * charW;
   }
-  let totalHeight = records.length * charH + 20;
+  let totalHeight = records.length * charH + 10;
 
   let svg =
     '<svg version="1.1" width="' +
@@ -70,10 +74,10 @@ function csvReady(rawData) {
     totalHeight +
     '" xmlns="http://www.w3.org/2000/svg">\n';
 
-  svg += '<style>text { font-family: monospace; } </style>';
+  svg += "<style>text { font-family: monospace; } </style>";
 
   let y = 20;
-  
+
   for (let lineIndex = 0; lineIndex < records.length; lineIndex++) {
     const record = records[lineIndex];
     let x = 10;
