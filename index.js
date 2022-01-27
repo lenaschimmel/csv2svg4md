@@ -65,7 +65,7 @@ function csvReady(rawData) {
   for (let w of maxWidth) {
     totalWidth += (w + 1) * charW;
   }
-  let totalHeight = records.length * charH + 10;
+  let totalHeight = (records.length + 1) * charH + 10;
 
   let svg =
     '<svg version="1.1" width="' +
@@ -92,6 +92,7 @@ function csvReady(rawData) {
     }
     y += charH;
   }
+  svg += '    <text x="' + 10 + '" y="' + y + '" style="fill:#AAA; font-size: 70%;">Generated at ' + new Date().toISOString() + "</text>\n";
   svg += "</svg>\n";
 
   return svg;
