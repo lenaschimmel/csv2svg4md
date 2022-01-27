@@ -8,6 +8,7 @@ const requestHandler = (request, ourResponse) => {
   let csvUrl = request.url.substring(1);
 
   ourResponse.setHeader("Content-Type", "image/svg+xml");
+  ourResponse.setHeader("Cache-Control", "no-cache");
 
   if (csvUrl == "favicon.ico") {
     ourResponse.end(csvReady("csv\nsvg"));
