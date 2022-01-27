@@ -15,6 +15,7 @@ const requestHandler = (request, ourResponse) => {
     return;
   }
 
+  try {
   axios
     .get(csvUrl)
     .then((remoteResponse) => {
@@ -27,6 +28,11 @@ const requestHandler = (request, ourResponse) => {
         "Error while generatring table\nPlease check out input URL\nIt should look like this:\nhttp://csv.lenaschimmel.de/http://url.of.your/input/file.csv";
       ourResponse.end(csvReady(errorReport));
     });
+  } catch(error) {
+    console.log("Error: " + error);
+    let errorReport = "Error while generatring table\nPlease check out input URL\nIt should look like this:\nhttp://csv.lenaschimmel.de/http://url.of.your/input/file.csv";
+    ourResponse.end(csvReady(errorReport));
+  }
 };
 
 const server = http.createServer(requestHandler);
