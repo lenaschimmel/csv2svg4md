@@ -1,0 +1,1 @@
+This tool converts CSV tables into SVG images on the fly with a simple web server. You can use it to embed online CSV files into Markdown document, for example on GitHub.
